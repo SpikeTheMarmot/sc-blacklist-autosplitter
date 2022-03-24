@@ -31,6 +31,9 @@ startup
     settings.Add("resetWhenRestarting", false, "Reset timer when mission restarts (needs \"Reset\" to be enabled)");
     settings.SetToolTip("resetWhenRestarting", "Reset the timer when the mission restarts. This is useful for IL runs.");
 
+    settings.Add("splitOnMissionEnd", false, "Split when loading in the After Action Report starts instead of on mission end");
+    settings.SetToolTip("splitOnMissionEnd", "Split when loading in the After Action Report starts instead of on mission end.");
+
     settings.Add("syncWithIngameTime", false, "Sync timer with actual game time");
     settings.SetToolTip("syncWithIngameTime", "The timer will run with the actual speed the game runs at.");
 
@@ -111,12 +114,12 @@ start
 
 split
 {
-    // split on load after the mission ended
-    bool startedLoading = current.isLoading && !old.isLoading;
-    if (current.levelID == vars.siteFLevelID) {
-        // TODO: end split on first frame of the cutscene with the knife in the snow
-        return current.isMissionCompleted && startedLoading;
+    if (settings["splitOnMissionEnd"]) {
+        return current.isMissionCompleted;
     } else {
+        // split on load after the mission ended
+        // TODO: end split on first frame of the cutscene with the knife in the snow
+        bool startedLoading = current.isLoading && !old.isLoading;
         return current.isMissionCompleted && startedLoading;
     }
 }
