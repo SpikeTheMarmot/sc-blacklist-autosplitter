@@ -31,7 +31,7 @@ startup
     settings.Add("resetWhenRestarting", false, "Reset timer when mission restarts (needs \"Reset\" to be enabled)");
     settings.SetToolTip("resetWhenRestarting", "Reset the timer when the mission restarts. This is useful for IL runs.");
 
-    settings.Add("splitOnMissionEnd", false, "Split when loading in the After Action Report starts instead of on mission end");
+    settings.Add("splitOnMissionEnd", false, "Split on mission end instead of when loading starts in the After Action Report.");
     settings.SetToolTip("splitOnMissionEnd", "Split when loading in the After Action Report starts instead of on mission end.");
 
     settings.Add("syncWithIngameTime", false, "Sync timer with actual game time");
