@@ -1,18 +1,19 @@
+// Tom Clancy's Splinter Cell Blacklist Autosplitter by Spike & Butt4cak3
+// Please contact Spike or Butt4cak3 in case you find a bug or have suggestions for improvements.
+// You can also create an issue and/or open a PR.
+
 state("Blacklist_game")
 {
     int levelID: 0x2E392A8;
     float gameUptime: 0x2FC5AC8;
     bool isLoading: 0x2ECEDBC, 0x0, 0x29;
     bool isInLoadScreen: 0x2EB5A18;
-    // also true when in load screens
-    bool isRestarting: 0x2EB5D4E;
+    bool isRestarting: 0x2EB5D4E;                               // also true when in load screens
     bool isMissionCompleted: 0x2ED054C, 0x34, 0x0;
-    // is buggy if you keep input pressed while the cutscene ends
-    bool isNotInCutscene: 0x2EB5DDC, 0x38, 0x1F0, 0xC0, 0xADC;
+    bool isNotInCutscene: 0x2EB5DDC, 0x38, 0x1F0, 0xC0, 0xADC;  // is buggy if you keep input pressed while the cutscene ends
     bool isInCutscene1: 0x2ECEDBC, 0x0, 0x28;
     bool isInCutscene2: 0x2EB5DBC, 0x18474;
-    // hasControl can be true for some time before cutscenes
-    bool hasControl: 0x2ECE460, 0x4, 0x4C, 0x1A8, 0x40;
+    bool hasControl: 0x2ECE460, 0x4, 0x4C, 0x1A8, 0x40;         // hasControl can be true for some time before cutscenes
 }
 
 startup
@@ -59,7 +60,9 @@ update
 gameTime
 {
     // do not sync timer with ingame time when the setting is disabled
-    if (!settings["syncWithIngameTime"]) return null;
+    if (!settings["syncWithIngameTime"]) {
+        return null;
+    }
     double time = current.gameUptime - vars.startTime - vars.timeLoading;
     return TimeSpan.FromSeconds(time);
 }
