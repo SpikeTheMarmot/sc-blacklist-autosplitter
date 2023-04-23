@@ -18,7 +18,7 @@ state("Blacklist_game")
 
 startup
 {
-    settings.Add("startWhenGettingControl", true, "Start timer when you get control");
+    settings.Add("startWhenGettingControl", true, "Start timer when getting control");
     settings.SetToolTip("startWhenGettingControl", "Start the timer when you get control instead of when the load finishes.");
     settings.CurrentDefaultParent = "startWhenGettingControl";
     settings.Add("startWhenGettingControl_Sh", true, "Safehouse (Starts when the voice line triggers)");
@@ -33,7 +33,7 @@ startup
     settings.SetToolTip("resetWhenRestarting", "Reset the timer when the mission restarts. This is useful for IL runs.");
 
     settings.Add("splitOnMissionEnd", false, "Split on mission end instead of when loading starts in the After Action Report.");
-    settings.SetToolTip("splitOnMissionEnd", "Split when loading in the After Action Report starts instead of on mission end.");
+    settings.SetToolTip("splitOnMissionEnd", "Could be useful for IL runs. Does not work with multiple splits.");
 
     settings.Add("syncWithIngameTime", false, "Sync timer with actual game time");
     settings.SetToolTip("syncWithIngameTime", "The timer will run with the actual speed the game runs at.");
