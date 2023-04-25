@@ -7,6 +7,7 @@ state("Blacklist_game")
     int levelID: 0x2E392A8;
     float gameUptime: 0x2FC5AC8;
     bool isLoading: 0x2ECEDBC, 0x0, 0x29;
+    bool isLoadingSpecial: 0x2ECEDBC, 0x0, 0x2A;                // is true during the freeze load in Site F
     bool isInLoadScreen: 0x2EB5A18;
     bool isRestarting: 0x2EB5D4E;                               // also true when in load screens
     bool isMissionCompleted: 0x2ED054C, 0x34, 0x0;
@@ -55,6 +56,8 @@ update
 {
     vars.isInCutscene = current.isInCutscene1 || current.isInCutscene2;
     vars.oldIsInCutscene = old.isInCutscene1 || old.isInCutscene2;
+    vars.isLoading = current.isLoading || current.isLoadingSpecial;
+    vars.oldIsLoading = old.isLoading || old.isLoadingSpecial;
 }
 
 gameTime
@@ -69,7 +72,7 @@ gameTime
 
 isLoading
 {
-    if (current.isLoading) {
+    if (vars.isLoading) {
         // add frame time to accumulated loading time
         vars.timeLoading += current.gameUptime - old.gameUptime;
     }
@@ -78,7 +81,7 @@ isLoading
         // always report actual game time
         return true;
     } else {
-        return current.isLoading;
+        return vars.isLoading;
     }
 }
 
@@ -94,7 +97,7 @@ start
 
     // if option is not enabled start when loading completes
     if (!settings["startWhenGettingControl"]) {
-        return isInMission && !current.isLoading && old.isLoading;
+        return isInMission && !vars.isLoading && vars.oldIsLoading;
     }
 
     if (settings["startWhenGettingControl_HS"] && current.levelID == vars.hawkinsSeafortLevelID
@@ -111,18 +114,17 @@ start
         return isInMission && !current.isRestarting && gotControl;
 
     } else {
-        return isInMission && !current.isLoading && old.isLoading;
+        return isInMission && !vars.isLoading && vars.oldIsLoading;
     }
 }
 
 split
 {
     if (settings["splitOnMissionEnd"]) {
-        return current.isMissionCompleted;
+        return current.isMissionCompleted && !old.isMissionCompleted;
     } else {
         // split on load after the mission ended
-        // TODO: end split on first frame of the cutscene with the knife in the snow
-        bool startedLoading = current.isLoading && !old.isLoading;
+        bool startedLoading = vars.isLoading && !vars.oldIsLoading;
         return current.isMissionCompleted && startedLoading;
     }
 }
